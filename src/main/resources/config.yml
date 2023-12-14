@@ -1,0 +1,4 @@
+# default player pet nametag
+default-pet-nametag: "&a[PET] %player%"
+pet-distance: 1.5
+pet-height: 0

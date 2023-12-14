@@ -1,0 +1,85 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+group = 'id.rajaopak'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "spigotmc-repo"
+        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+    }
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
+    maven {
+        name = "jitpack"
+        url = "https://jitpack.io"
+    }
+    maven {
+        name = "mobchip"
+        url = "https://repo.codemc.io/repository/maven-snapshots/"
+    }
+}
+
+dependencies {
+    compileOnly "org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT"
+
+    //implementation 'me.gamercoder215:mobchip-bukkit:1.9.2-SNAPSHOT'
+    implementation 'me.gamercoder215:mobchip-bukkit:1.9.4-SNAPSHOT'
+    implementation 'com.github.rajaopak:OpakLibrary:0fb1f73b99'
+}
+
+def targetJavaVersion = 17
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
+    }
+}
+
+shadowJar {
+
+    minimize {
+        exclude(dependency('dev.rajaopak:opaklibrary:.*'))
+        exclude(dependency('me.gamercoder215:.*:.*'))
+    }
+
+    exclude 'me/gamercoder215/mobchip/abstraction/v1_13_R1/*'
+    exclude 'me/gamercoder215/mobchip/abstraction/v1_16_R1/*'
+    exclude 'me/gamercoder215/mobchip/abstraction/v1_16_R2/*'
+    exclude 'me/gamercoder215/mobchip/abstraction/v1_18_R1/*'
+
+    relocate 'dev.rajaopak.opaklibrary', "id.rajaopak.library"
+    relocate 'me.gamercoder215.mobchip', "id.rajaopak.mobchip"
+
+    doLast {
+        copy {
+            from archivePath
+            into 'D:\\server\\1.20.2-test\\plugins'
+        }
+    }
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+assemble.dependsOn shadowJar

@@ -1,0 +1,7 @@
+name: PetCosmetic
+version: '${version}'
+main: id.rajaopak.petcosmetic.PetCosmetic
+api-version: '1.20'
+authors: [rajaopak]
+description: Show your pet!
+website: https://github.com/rajaopak

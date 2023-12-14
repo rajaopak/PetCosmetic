@@ -1,0 +1,19 @@
+package id.rajaopak.petcosmetic.pets;
+
+import id.rajaopak.petcosmetic.PetType;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
+
+public class PetWither extends Pet {
+    public PetWither(Player player, PetType<?> petType) {
+        super(player, petType);
+    }
+
+    @EventHandler
+    public void onShoot(ProjectileLaunchEvent event) {
+        if (event.getEntity().getShooter() == mob) {
+            event.setCancelled(true);
+        }
+    }
+}
