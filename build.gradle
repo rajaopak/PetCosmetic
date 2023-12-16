@@ -54,7 +54,6 @@ shadowJar {
     minimize {
         exclude(dependency('dev.rajaopak:opaklibrary:.*'))
         exclude(dependency('me.gamercoder215:.*:.*'))
-        //exclude(dependency(files("lib/mobchip-bukkit-1.9.2-SNAPSHOT.jar")))
     }
 
     // remove version that below 1.17
