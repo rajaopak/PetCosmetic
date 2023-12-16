@@ -35,8 +35,60 @@ public class MainCommand extends BaseCommand {
                 sender -> ChatUtil.sendMessage(sender, "&cYou don't have permission to do this!"),
                 sender -> ChatUtil.sendMessage(sender, "&cNo sub command was found!"),
                 (sender, args) -> {
-                    if (args[0].equalsIgnoreCase("summon")) {
-                        if (args.length == 4) {
+                    if (args[0].equalsIgnoreCase("release")) {
+                        if (!sender.hasPermission("petcosmetic.use.release")) {
+                            ChatUtil.sendMessage(sender, "&cYou don't have permission to do this!");
+                            return;
+                        }
+
+                        if (args.length == 2) {
+                            if (!(sender instanceof Player player)) {
+                                ChatUtil.sendMessage(sender, "&cOnly Player can execute this command!");
+                                return;
+                            }
+
+                            String mob = args[1];
+
+                            PetCosmetic.getInstance().getPetManager().getPetList().forEach(petType -> {
+                                if (petType.getName().equalsIgnoreCase(mob)) {
+                                    if (PetCosmetic.getInstance().getPetManager().hasPet(player)) {
+                                        PetCosmetic.getInstance().getPetManager().removePet(player);
+                                    }
+
+                                    Pet pet = null;
+
+                                    Constructor<?>[] cons = petType.getPet().getConstructors();
+
+                                    try {
+                                        for (Constructor<?> constructor : cons) {
+                                            if (constructor.getParameterTypes().length == 2 && constructor.getParameterTypes()[0].isAssignableFrom(Player.class) &&
+                                                    constructor.getParameterTypes()[1].isAssignableFrom(PetType.class)) {
+                                                pet = (Pet) constructor.newInstance(player, petType);
+                                            }
+                                        }
+                                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                                        throw new RuntimeException(e);
+                                    }
+
+                                    if (pet == null) {
+                                        ChatUtil.sendMessage(player, List.of("&cSomething went wrong while trying to spawn pet!", "&cPlease contact administrator."));
+                                        return;
+                                    }
+
+                                    if (pet.spawnPet()) {
+                                        pet.scheduleTask();
+                                        PetCosmetic.getInstance().getPetManager().addPet(player, pet);
+                                    }
+                                }
+                            });
+                        }
+
+                        if (args.length == 3 || args.length == 4) {
+                            if (!sender.hasPermission("petcosmetic.use.reload.others")) {
+                                ChatUtil.sendMessage(sender, "&cYou don't have permission to do this!");
+                                return;
+                            }
+
                             String mob = args[1];
                             String playerName = args[2];
                             String isBaby = args[3];
@@ -94,7 +146,30 @@ public class MainCommand extends BaseCommand {
                             ChatUtil.sendMessage(sender, "&6Usage: /pet summon <type> <player> <adult/baby>");
                         }
                     } else if (args[0].equalsIgnoreCase("despawn")) {
+                        if (!sender.hasPermission("petcosmetic.use.despawn")) {
+                            ChatUtil.sendMessage(sender, "&cYou don't have permission to do this!");
+                            return;
+                        }
+
+                        if (args.length == 1) {
+                            if (!(sender instanceof Player player)) {
+                                ChatUtil.sendMessage(sender, "&cOnly Player can execute this command!");
+                                return;
+                            }
+
+                            if (PetCosmetic.getInstance().getPetManager().hasPet(player)) {
+                                PetCosmetic.getInstance().getPetManager().removePet(player);
+                            } else {
+                                ChatUtil.sendMessage(player, "&cYou don't have any selected pet!");
+                            }
+                        }
+
                         if (args.length == 2) {
+                            if (!sender.hasPermission("petcosmetic.use.despawn.others")) {
+                                ChatUtil.sendMessage(sender, "&cYou don't have permission to do this!");
+                                return;
+                            }
+
                             String playerName = args[1];
 
                             Player player = Bukkit.getPlayer(playerName);
@@ -113,6 +188,11 @@ public class MainCommand extends BaseCommand {
                             ChatUtil.sendMessage(sender, "&6Usage: /pet despawn <player>");
                         }
                     } else if (args[0].equalsIgnoreCase("glow")) {
+                        if (!sender.hasPermission("petcosmetic.use.glow")) {
+                            ChatUtil.sendMessage(sender, "&cYou don't have permission to do this!");
+                            return;
+                        }
+
                         if (!(sender instanceof Player player)) {
                             ChatUtil.sendMessage(sender, "&cOnly player can execute this command!");
                             return;
@@ -127,10 +207,41 @@ public class MainCommand extends BaseCommand {
                         } else {
                             ChatUtil.sendMessage(sender, "&6Usage: /pet glow");
                         }
+                    } else if (args[0].equalsIgnoreCase("rename")) {
+                        if (!sender.hasPermission("petcosmetic.use.rename")) {
+                            ChatUtil.sendMessage(sender, "&cYou don't have permission to do this!");
+                            return;
+                        }
+
+                        if (!(sender instanceof Player player)) {
+                            ChatUtil.sendMessage(sender, "&cOnly player can execute this command!");
+                            return;
+                        }
+
+                        if (args.length > 1) {
+                            StringBuilder name = new StringBuilder();
+
+                            for (int i = 1; i < args.length + 1; i++) {
+                                name.append(args[i]).append(" ");
+                            }
+
+                            if (PetCosmetic.getInstance().getPetManager().hasPet(player)) {
+                                PetCosmetic.getInstance().getPetManager().getPet(player).renameMob(name.toString());
+                            } else {
+                                ChatUtil.sendMessage(player, "&cYou don't have any selected pet!");
+                            }
+                        } else {
+                            ChatUtil.sendMessage(sender, "&6Usage: /pet rename <name>");
+                        }
                     } else if (args[0].equalsIgnoreCase("reload")) {
+                        if (!sender.hasPermission("petcosmetic.use.reload")) {
+                            ChatUtil.sendMessage(sender, "&cYou don't have permission to do this!");
+                            return;
+                        }
+
                         if (args.length == 1) {
                             PetCosmetic.getInstance().getConfigFile().reloadConfig();
-                            PetCosmetic.getInstance().getPetManager().getPlayerPet().values().forEach(pet -> pet.renameMob(PetCosmetic.getInstance().getConfigFile().getConfig().getString("default-pet-nametag")));
+                            //PetCosmetic.getInstance().getPetManager().getPlayerPet().values().forEach(pet -> pet.renameMob(PetCosmetic.getInstance().getConfigFile().getConfig().getString("default-pet-nametag")));
                             ChatUtil.sendMessage(sender, "&cWarning: reloading the plugin may not effect the plugin at all. Consider to restart the server!");
                             ChatUtil.sendMessage(sender, "&aSuccessfully reload the plugin!");
                         } else {
@@ -158,23 +269,28 @@ public class MainCommand extends BaseCommand {
                     return PetCosmetic.getInstance().getPetManager().getPetList().stream().map(PetType::getName).filter(s -> s.toLowerCase().startsWith(args[1].toLowerCase())).sorted().collect(Collectors.toList());
                 }
             }
+
             if (args[0].equalsIgnoreCase("despawn")) {
-                if (sender.hasPermission("petcosmetic.use.despawn")) {
+                if (sender.hasPermission("petcosmetic.use.despawn.others")) {
                     return Bukkit.getOnlinePlayers().stream().map(Player::getName).filter(s -> s.toLowerCase().startsWith(args[1].toLowerCase())).sorted().collect(Collectors.toList());
                 }
             }
         } else if (args.length == 3) {
             if (args[0].equalsIgnoreCase("summon")) {
-                if (sender.hasPermission("petcosmetic.use.summon")) {
+                if (sender.hasPermission("petcosmetic.use.summon.others")) {
                     return Bukkit.getOnlinePlayers().stream().map(Player::getName).filter(s -> s.toLowerCase().startsWith(args[2].toLowerCase())).sorted().collect(Collectors.toList());
                 }
             }
         } else if (args.length == 4) {
             if (args[0].equalsIgnoreCase("summon")) {
-                if (sender.hasPermission("petcosmetic.use.summon")) {
+                if (sender.hasPermission("petcosmetic.use.summon.others")) {
                     return List.of("baby", "adult").stream().filter(s -> s.toLowerCase().startsWith(args[3].toLowerCase())).sorted().collect(Collectors.toList());
                 }
             }
+        }
+
+        if (args[0].equalsIgnoreCase("rename")) {
+            return Collections.emptyList();
         }
 
         if (args[0].equalsIgnoreCase("glow")) {

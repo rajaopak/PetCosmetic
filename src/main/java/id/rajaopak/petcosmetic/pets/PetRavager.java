@@ -12,4 +12,9 @@ public class PetRavager extends Pet {
     public double getDistance() {
         return 2;
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

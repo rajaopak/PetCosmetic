@@ -7,4 +7,9 @@ public class PetEndermite extends Pet {
     public PetEndermite(Player player, PetType<?> petType) {
         super(player, petType);
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

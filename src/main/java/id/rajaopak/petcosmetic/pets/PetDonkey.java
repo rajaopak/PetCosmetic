@@ -13,4 +13,9 @@ public class PetDonkey extends Pet {
     protected void setupMob() {
         ((Donkey) mob).setCarryingChest(true);
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

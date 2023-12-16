@@ -13,4 +13,9 @@ public class PetCreeper extends Pet {
     protected void setupMob() {
         ((Creeper) mob).setPowered(true);
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

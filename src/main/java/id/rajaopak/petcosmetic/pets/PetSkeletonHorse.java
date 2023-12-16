@@ -12,4 +12,9 @@ public class PetSkeletonHorse extends Pet {
     public double getDistance() {
         return 1.5;
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

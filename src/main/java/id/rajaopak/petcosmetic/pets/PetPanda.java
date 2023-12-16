@@ -13,4 +13,9 @@ public class PetPanda extends Pet {
     protected void setupMob() {
         mob.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.2);
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

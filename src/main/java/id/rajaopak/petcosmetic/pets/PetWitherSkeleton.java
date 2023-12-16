@@ -7,4 +7,9 @@ public class PetWitherSkeleton extends Pet {
     public PetWitherSkeleton(Player player, PetType<?> petType) {
         super(player, petType);
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

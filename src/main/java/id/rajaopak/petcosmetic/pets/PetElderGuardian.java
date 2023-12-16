@@ -22,4 +22,9 @@ public class PetElderGuardian extends Pet {
             event.setCancelled(true);
         }
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

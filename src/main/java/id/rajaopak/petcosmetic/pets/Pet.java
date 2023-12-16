@@ -32,6 +32,7 @@ public abstract class Pet extends BukkitRunnable implements Listener {
     protected String name = null;
 
     protected boolean isBaby = false;
+    protected boolean isFlying = false;
 
     public Pet(Player player, PetType<?> petType) {
         this.player = player;
@@ -83,7 +84,10 @@ public abstract class Pet extends BukkitRunnable implements Listener {
     }
 
     private Mob spawnEntity() {
-        return (Mob) player.getWorld().spawnEntity(player.getLocation().add(0, 1, 0), petType.getType());
+        if (isFlying()) {
+            return (Mob) player.getWorld().spawnEntity(player.getLocation().add(0, 1, 0), petType.getType());
+        }
+        return (Mob) player.getWorld().spawnEntity(player.getLocation(), petType.getType());
     }
 
     public void scheduleTask() {
@@ -97,7 +101,7 @@ public abstract class Pet extends BukkitRunnable implements Listener {
         ai.getTargetAI().clear();
         ai.getScheduleManager().clear();
 
-        ai.getGoalAI().put(new PetPathFinder(mob, player, getDistance(), getHeight()), 0);
+        ai.getGoalAI().put(new PetPathFinder(mob, player, isFlying(), getDistance(), getHeight()), 0);
         ai.getGoalAI().put(new PathfinderLookAtEntity<>(mob, Player.class), 1);
     }
 
@@ -176,12 +180,20 @@ public abstract class Pet extends BukkitRunnable implements Listener {
         return isBaby;
     }
 
+    public boolean isFlying() {
+        return isFlying;
+    }
+
     public void setBaby(boolean baby) {
         this.isBaby = baby;
         if (mob != null && mob.isValid()) {
             mob.remove();
             spawnPet();
         }
+    }
+
+    public void setFlying(boolean flying) {
+        this.isFlying = flying;
     }
 
     public void clear() {

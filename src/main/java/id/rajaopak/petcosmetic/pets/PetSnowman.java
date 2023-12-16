@@ -16,4 +16,9 @@ public class PetSnowman extends Pet {
             event.setCancelled(true);
         }
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

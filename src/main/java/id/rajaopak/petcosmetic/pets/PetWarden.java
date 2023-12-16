@@ -23,4 +23,9 @@ public class PetWarden extends Pet {
             event.setCancelled(true);
         }
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

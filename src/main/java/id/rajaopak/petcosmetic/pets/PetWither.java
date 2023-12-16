@@ -16,4 +16,9 @@ public class PetWither extends Pet {
             event.setCancelled(true);
         }
     }
+
+    @Override
+    public boolean isFlying() {
+        return true;
+    }
 }

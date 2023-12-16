@@ -13,4 +13,9 @@ public class PetMule extends Pet {
     protected void setupMob() {
         ((Mule) mob).setCarryingChest(true);
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

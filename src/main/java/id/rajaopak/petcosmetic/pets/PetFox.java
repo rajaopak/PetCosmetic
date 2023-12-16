@@ -22,4 +22,9 @@ public class PetFox extends Pet {
             default -> ((Fox) mob).setFoxType(Fox.Type.SNOW);
         }
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

@@ -16,4 +16,9 @@ public class PetAllay extends Pet {
             event.setCancelled(true);
         }
     }
+
+    @Override
+    public boolean isFlying() {
+        return true;
+    }
 }

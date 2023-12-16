@@ -13,4 +13,9 @@ public class PetSlime extends Pet {
     protected void setupMob() {
         ((Slime) mob).setSize(1);
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

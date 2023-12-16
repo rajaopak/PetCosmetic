@@ -13,4 +13,9 @@ public class PetMagmaCube extends Pet {
     protected void setupMob() {
         ((MagmaCube) mob).setSize(1);
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

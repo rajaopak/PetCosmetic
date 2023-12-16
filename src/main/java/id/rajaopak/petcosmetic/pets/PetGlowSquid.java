@@ -7,4 +7,9 @@ public class PetGlowSquid extends Pet {
     public PetGlowSquid(Player player, PetType<?> petType) {
         super(player, petType);
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

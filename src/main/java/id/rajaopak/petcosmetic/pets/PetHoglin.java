@@ -18,4 +18,9 @@ public class PetHoglin extends Pet {
     protected void setupMob() {
         ((Hoglin) mob).setImmuneToZombification(true);
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

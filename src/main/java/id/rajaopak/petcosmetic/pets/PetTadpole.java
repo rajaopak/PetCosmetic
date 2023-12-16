@@ -18,4 +18,9 @@ public class PetTadpole extends Pet {
     public double getDistance() {
         return 1;
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

@@ -7,4 +7,9 @@ public class PetParrot extends Pet {
     public PetParrot(Player player, PetType<?> petType) {
         super(player, petType);
     }
+
+    @Override
+    public boolean isFlying() {
+        return true;
+    }
 }

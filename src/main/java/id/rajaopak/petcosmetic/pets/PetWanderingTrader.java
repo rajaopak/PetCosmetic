@@ -18,4 +18,9 @@ public class PetWanderingTrader extends Pet {
     public boolean useMarkerArmorStand() {
         return false;
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

@@ -13,4 +13,9 @@ public class PetPiglinBrute extends Pet {
     protected void setupMob() {
         ((PiglinBrute) mob).setImmuneToZombification(true);
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

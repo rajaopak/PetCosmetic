@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'id.rajaopak'
@@ -21,15 +21,14 @@ repositories {
         url = "https://jitpack.io"
     }
     maven {
-        name = "mobchip"
-        url = "https://repo.codemc.io/repository/maven-snapshots/"
+        url "https://repo.codemc.io/repository/maven-snapshots/"
     }
 }
 
 dependencies {
-    compileOnly "org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT"
+    compileOnly "org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT"
 
-    //implementation 'me.gamercoder215:mobchip-bukkit:1.9.2-SNAPSHOT'
+    //implementation files("lib/mobchip-bukkit-1.9.4-SNAPSHOT.jar")
     implementation 'me.gamercoder215:mobchip-bukkit:1.9.4-SNAPSHOT'
     implementation 'com.github.rajaopak:OpakLibrary:0fb1f73b99'
 }
@@ -55,11 +54,17 @@ shadowJar {
     minimize {
         exclude(dependency('dev.rajaopak:opaklibrary:.*'))
         exclude(dependency('me.gamercoder215:.*:.*'))
+        //exclude(dependency(files("lib/mobchip-bukkit-1.9.2-SNAPSHOT.jar")))
     }
 
+    // remove version that below 1.17
     exclude 'me/gamercoder215/mobchip/abstraction/v1_13_R1/*'
+    exclude 'me/gamercoder215/mobchip/abstraction/v1_13_R2/*'
+    exclude 'me/gamercoder215/mobchip/abstraction/v1_14_R1/*'
+    exclude 'me/gamercoder215/mobchip/abstraction/v1_15_R1/*'
     exclude 'me/gamercoder215/mobchip/abstraction/v1_16_R1/*'
     exclude 'me/gamercoder215/mobchip/abstraction/v1_16_R2/*'
+    exclude 'me/gamercoder215/mobchip/abstraction/v1_16_R3/*'
     exclude 'me/gamercoder215/mobchip/abstraction/v1_18_R1/*'
 
     relocate 'dev.rajaopak.opaklibrary', "id.rajaopak.library"
@@ -81,5 +86,57 @@ processResources {
         expand props
     }
 }
+
+//tasks.register("obfuscate") {
+//    group = 'jar preparation'
+//
+//    println "start"
+//
+//    HashMap<String, String> verList = new HashMap<>();
+//
+//    verList.put('1.17.R1', '1.17.1-R0.1')
+//    verList.put('1.18.R2', '1.18.2-R0.1')
+//    verList.put('1.19.R1', '1.19-R0.1')
+//    verList.put('1.19.R2', '1.19.3-R0.1')
+//    verList.put('1.19.R3', '1.19.4-R0.1')
+//    verList.put('1.20.R1', '1.20.1-R0.1')
+//    verList.put('1.20.R2', '1.20.2-R0.1')
+//    verList.put('1.20.R3', '1.20.4-R0.1')
+//
+//    new ZipFile(file(project.gradle.gradleUserHomeDir.parent + '/IdeaProjects/PetCosmetic/build/libs/PetCosmetic-1.0-SNAPSHOT-all.jar')).entries().each { entry ->
+//        //println entry.name
+//        if (entry.isDirectory() && entry.name.startsWith("id/rajaopak/mobchip/abstraction")) {
+//            def version = verList.get(entry.name.replace('id/rajaopak/mobchip/abstraction', '').replace('/', '').replace('v', '').replace('_', '.'))
+//
+////            println entry.name
+////            println version
+//
+//            if (version != null) {
+//                project.exec {
+//                    workingDir project.buildDir
+//                    commandLine 'java', '-cp',
+//                            project.gradle.gradleUserHomeDir.parent + '/IdeaProjects/PetCosmetic/lib/SpecialSource.jar' + File.pathSeparator + project.gradle.gradleUserHomeDir.parent + '/.m2/repository/org/spigotmc/spigot/' + version + '-SNAPSHOT/spigot-' + version + '-SNAPSHOT-remapped-mojang.jar',
+//                            'net.md_5.specialsource.SpecialSource', '--live', '--only', 'id.rajaopak.mobchip.abstraction', '-q',
+//                            '-i', 'libs/PetCosmetic-1.0-SNAPSHOT-all.jar',
+//                            '-o', 'libs/PetCosmetic-obfuscated.jar',
+//                            '-m', project.gradle.gradleUserHomeDir.parent + '/.m2/repository/org/spigotmc/minecraft-server/' + version + '-SNAPSHOT/minecraft-server-' + version + '-SNAPSHOT-maps-mojang.txt', '--reverse'
+//
+//                }
+//
+//                project.exec {
+//                    workingDir project.buildDir
+//                    commandLine 'java', '-cp',
+//                            project.gradle.gradleUserHomeDir.parent + '/IdeaProjects/PetCosmetic/lib/SpecialSource.jar' + File.pathSeparator + project.gradle.gradleUserHomeDir.parent + '/.m2/repository/org/spigotmc/spigot/' + version + '-SNAPSHOT/spigot-' + version + '-SNAPSHOT-remapped-obf.jar',
+//                            'net.md_5.specialsource.SpecialSource', '--live', '--only', 'id.rajaopak.mobchip.abstraction', '-q',
+//                            '-i', 'libs/PetCosmetic-obfuscated.jar',
+//                            '-o', 'libs/PetCosmetic-1.0.jar',
+//                            '-m', project.gradle.gradleUserHomeDir.parent + '/.m2/repository/org/spigotmc/minecraft-server/' + version + '-SNAPSHOT/minecraft-server-' + version + '-SNAPSHOT-maps-spigot.csrg'
+//                }
+//            }
+//        }
+//    }
+//
+//    println "end"
+//}
 
 assemble.dependsOn shadowJar

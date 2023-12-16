@@ -12,4 +12,9 @@ public class PetZoglin extends Pet {
     public double getDistance() {
         return 1.8;
     }
+
+    @Override
+    public boolean isFlying() {
+        return false;
+    }
 }

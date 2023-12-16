@@ -1,4 +1,8 @@
 # default player pet nametag
 default-pet-nametag: "&a[PET] %player%"
+
+# distance betwwen player and their pet
 pet-distance: 1.5
+
+# only works with flying pets
 pet-height: 0
