@@ -6,3 +6,10 @@ pet-distance: 1.5
 
 # only works with flying pets
 pet-height: 0
+
+# default player limit, to change per player limit,
+# give the player permission "minepets.limit.<limit>"
+player-pet-limit: 5
+
+# use or not pet gui for player summon their pet
+use-pet-gui: false

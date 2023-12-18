@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PetCosmetic.main.iml" filepath="$PROJECT_DIR$/.idea/modules/PetCosmetic.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PetCosmetic.test.iml" filepath="$PROJECT_DIR$/.idea/modules/PetCosmetic.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MinePets.main.iml" filepath="$PROJECT_DIR$/.idea/modules/MinePets.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MinePets.test.iml" filepath="$PROJECT_DIR$/.idea/modules/MinePets.test.iml" />
     </modules>
   </component>
 </project>
