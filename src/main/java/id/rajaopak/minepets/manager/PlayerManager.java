@@ -2,15 +2,10 @@ package id.rajaopak.minepets.manager;
 
 import id.rajaopak.minepets.MinePets;
 import id.rajaopak.minepets.util.LuckpermsHook;
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.actionlog.Action;
-import net.luckperms.api.model.data.DataMutateResult;
-import net.luckperms.api.node.types.PermissionNode;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 
-import java.time.Instant;
 import java.util.HashMap;
 
 public class PlayerManager {
@@ -38,23 +33,19 @@ public class PlayerManager {
     public void setPlayerPermission(Player player, String permission) {
         if (this.plugin.isLuckPermsEnabled()) {
             LuckpermsHook.setPlayerPermission(player, permission);
-            System.out.println("luckperms");
             return;
         }
 
         getPlayer(player).setPermission(permission, true);
-        System.out.println("biasa");
     }
 
     public void removePlayerPermission(Player player, String permission) {
         if (this.plugin.isLuckPermsEnabled()) {
             LuckpermsHook.removePlayerPermission(player, permission);
-            System.out.println("luckperms");
             return;
         }
 
         getPlayer(player).unsetPermission(permission);
-        System.out.println("biasa");
     }
 
     public int getPlayerPetLimit(Player player) {

@@ -26,12 +26,10 @@ repositories {
 }
 
 dependencies {
-    compileOnly "org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT"
+    compileOnly "org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT"
     compileOnly "net.luckperms:api:5.4"
 
-    implementation fileTree("lib/mobchip-bukkit-1.9.4-SNAPSHOT.jar")
-    //implementation 'me.gamercoder215:mobchip-bukkit:1.9.4-SNAPSHOT'
-    //implementation group: 'me.gamercoder215', name: 'mobchip-bukkit', version: '1.9.4-SNAPSHOT', classifier: null
+    implementation 'com.github.datatags.MobChipLite:mobchip-bukkit:1.10.9'
 
     implementation 'com.github.rajaopak:OpakLibrary:b90ffca5e8'
 }
